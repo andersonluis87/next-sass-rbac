@@ -1,11 +1,8 @@
-// https://casl.js.org/v6/en/cookbook/roles-with-static-permissions
-
 import { AbilityBuilder } from '@casl/ability'
 
 import { AppAbility } from '.'
 import { User } from './models/User'
-
-type Role = 'ADMIN' | 'MEMBER'
+import { Role } from './roles'
 
 type PermissionsByRole = (
   user: User,
@@ -13,11 +10,14 @@ type PermissionsByRole = (
 ) => void
 
 export const permissions: Record<Role, PermissionsByRole> = {
-  ADMIN(user, { can }) {
+  ADMIN(_, { can }) {
     can('manage', 'all')
   },
-  MEMBER(user, { can }) {
-    can('invite', 'User')
+  MEMBER(_, { can }) {
+    // can('invite', 'User')
     can('manage', 'Project')
+  },
+  BILLING(_, { can }) {
+    can('manage', 'Billing')
   },
 }
