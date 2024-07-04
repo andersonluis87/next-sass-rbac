@@ -2,7 +2,6 @@ import {
   AbilityBuilder,
   CreateAbility,
   createMongoAbility,
-  ForcedSubject,
   MongoAbility,
 } from '@casl/ability'
 
