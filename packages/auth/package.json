@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "devDependencies": {
-    "@sass/prettier": "workspace:*",
     "@sass/eslint-config": "workspace:*",
+    "@sass/prettier": "workspace:*",
     "@sass/tsconfig": "workspace:*"
   },
   "eslintConfig": {
@@ -14,5 +14,8 @@
       "@sass/eslint-config/library.js"
     ]
   },
-  "prettier": "@sass/prettier"
+  "prettier": "@sass/prettier",
+  "dependencies": {
+    "@casl/ability": "^6.7.1"
+  }
 }

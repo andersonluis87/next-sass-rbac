@@ -1,4 +1,4 @@
 {
-  "extends": "@sass/tsconfig/library.json",
+  "extends": "@sass/tsconfig/node.json",
   "include": ["src/**/*"]
 }
