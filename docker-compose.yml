@@ -1,0 +1,14 @@
+services:
+  pg:
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRESQL_USERNAME=${POSTGRES_USER}
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRESQL_DATABASE=${POSTGRES_DATABASE}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - next_sass_api_data:/bitnami/postgresql
+
+volumes:
+  next_sass_api_data: {}
