@@ -2,6 +2,7 @@ import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
+import { env } from '@sass/env'
 import { fastify } from 'fastify'
 import {
   jsonSchemaTransform,
@@ -11,6 +12,7 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from './error-handler'
+import { auth } from './middlewares/auth'
 import { authenticateWithGithub } from './routes/auth/authenticate-with-github'
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
@@ -32,7 +34,15 @@ app.register(fastifySwagger, {
       description: 'Boilerplate for Next.js, Sass, and RBAC',
       version: '1.0.0',
     },
-    servers: [],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
@@ -42,7 +52,7 @@ app.register(fastifySwaggerUI, {
 })
 
 app.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET || 'your-secret-key',
+  secret: env.JWT_SECRET,
 })
 
 app.register(fastifyCors)
@@ -53,6 +63,6 @@ app.register(requestPasswordRecover)
 app.register(resetPassword)
 app.register(authenticateWithGithub)
 
-app.listen({ port: 3333 }).then(() => {
-  console.log('Server running on http://localhost:3333')
+app.listen({ port: env.SERVER_PORT }).then(() => {
+  console.log(`Server running on http://localhost:${env.SERVER_PORT}`)
 })
