@@ -6,9 +6,10 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 
 import { BadRequestError } from '../_errors/bad-request-error'
+import { routeProvider } from '../fastify-zod-route-provider'
 
 export async function createAccount(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().post(
+  routeProvider(app).post(
     '/users',
     {
       schema: {
@@ -21,7 +22,7 @@ export async function createAccount(app: FastifyInstance) {
         }),
       },
     },
-    async (request, response) => {
+    async (request, reply) => {
       const { email, name, password } = request.body
 
       const userAlredyExists = await prisma.user.findUnique({
@@ -59,7 +60,7 @@ export async function createAccount(app: FastifyInstance) {
         },
       })
 
-      return response.status(201).send()
+      return reply.status(201).send()
     }
   )
 }

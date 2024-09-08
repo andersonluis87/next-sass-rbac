@@ -1,11 +1,12 @@
 import type { FastifyInstance } from 'fastify'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 
 import { prisma } from '@/lib/prisma'
 
+import { routeProvider } from '../fastify-zod-route-provider'
+
 export async function requestPasswordRecover(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().post(
+  routeProvider(app).post(
     '/password/recover',
     {
       schema: {

@@ -1,15 +1,15 @@
 import { env } from '@sass/env'
 import type { FastifyInstance } from 'fastify'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 
 import { prisma } from '@/lib/prisma'
 
 import { BadRequestError } from '../_errors/bad-request-error'
+import { routeProvider } from '../fastify-zod-route-provider'
 
 // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
 export async function authenticateWithGithub(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().post(
+  routeProvider(app).post(
     '/sessions/github',
     {
       schema: {
