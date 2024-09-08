@@ -1,4 +1,3 @@
-import { hash } from 'bcryptjs'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
