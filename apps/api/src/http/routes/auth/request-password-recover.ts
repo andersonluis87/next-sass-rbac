@@ -3,10 +3,10 @@ import z from 'zod'
 
 import { prisma } from '@/lib/prisma'
 
-import { routeProvider } from '../fastify-zod-route-provider'
+import { route } from '../fastify-zod-route-provider'
 
 export async function requestPasswordRecover(app: FastifyInstance) {
-  routeProvider(app).post(
+  route(app).post(
     '/password/recover',
     {
       schema: {

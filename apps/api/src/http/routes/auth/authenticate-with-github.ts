@@ -5,11 +5,11 @@ import z from 'zod'
 import { prisma } from '@/lib/prisma'
 
 import { BadRequestError } from '../_errors/bad-request-error'
-import { routeProvider } from '../fastify-zod-route-provider'
+import { route } from '../fastify-zod-route-provider'
 
 // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
 export async function authenticateWithGithub(app: FastifyInstance) {
-  routeProvider(app).post(
+  route(app).post(
     '/sessions/github',
     {
       schema: {
