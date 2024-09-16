@@ -9,7 +9,7 @@ import { protectedRoute } from '../fastify-zod-route-provider'
 
 export async function createOrganization(app: FastifyInstance) {
   protectedRoute(app).post(
-    '/organization',
+    '/organizations',
     {
       schema: {
         tags: ['organizations'],
