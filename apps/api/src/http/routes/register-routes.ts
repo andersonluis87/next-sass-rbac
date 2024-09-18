@@ -10,6 +10,7 @@ import { createOrganization } from '../routes/orgs/create-organization'
 import { getMembership } from './orgs/get-membership'
 import { getOrganization } from './orgs/get-organization'
 import { getOrganizations } from './orgs/get-organizations'
+import { shutdownOrganization } from './orgs/shutdown-organization'
 import { updateOrganization } from './orgs/update-organization'
 
 export function registerRoutes(app: FastifyInstance) {
@@ -24,4 +25,5 @@ export function registerRoutes(app: FastifyInstance) {
   app.register(getOrganization)
   app.register(getOrganizations)
   app.register(updateOrganization)
+  app.register(shutdownOrganization)
 }
