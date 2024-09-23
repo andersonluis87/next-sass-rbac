@@ -22,6 +22,7 @@ export async function createProject(app: FastifyInstance) {
         body: z.object({
           name: z.string(),
           description: z.string(),
+          avatarUrl: z.string().url().optional(),
         }),
         response: {
           200: z.object({
@@ -42,7 +43,7 @@ export async function createProject(app: FastifyInstance) {
         throw new BadRequestError('You are not allowed to create a project')
       }
 
-      const { name, description } = request.body
+      const { name, description, avatarUrl } = request.body
 
       const projectSlug = createSlug(name)
 
@@ -52,6 +53,7 @@ export async function createProject(app: FastifyInstance) {
           name,
           slug: projectSlug,
           description,
+          avatarUrl,
           organizationId: organization.id,
           ownerId: userId,
         },

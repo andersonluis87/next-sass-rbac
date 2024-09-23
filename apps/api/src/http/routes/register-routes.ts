@@ -14,6 +14,8 @@ import { shutdownOrganization } from './orgs/shutdown-organization'
 import { transferOrganization } from './orgs/transfer-organization'
 import { updateOrganization } from './orgs/update-organization'
 import { createProject } from './projects/create-project'
+import { deleteProject } from './projects/delete-project'
+import { getProject } from './projects/get-project'
 
 export function registerRoutes(app: FastifyInstance) {
   app.register(createAccount)
@@ -30,4 +32,6 @@ export function registerRoutes(app: FastifyInstance) {
   app.register(shutdownOrganization)
   app.register(transferOrganization)
   app.register(createProject)
+  app.register(deleteProject)
+  app.register(getProject)
 }
