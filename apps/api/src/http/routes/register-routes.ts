@@ -18,6 +18,7 @@ import { deleteProject } from './projects/delete-project'
 import { getProject } from './projects/get-project'
 import { getProjects } from './projects/get-projects'
 import { updateProject } from './projects/update-project'
+import { getMembers } from './members/get-members'
 
 export function registerRoutes(app: FastifyInstance) {
   app.register(createAccount)
@@ -38,4 +39,5 @@ export function registerRoutes(app: FastifyInstance) {
   app.register(getProject)
   app.register(getProjects)
   app.register(updateProject)
+  app.register(getMembers)
 }

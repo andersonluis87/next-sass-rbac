@@ -63,7 +63,6 @@ export async function updateProject(app: FastifyInstance) {
         data: {
           name,
           description,
-          avatarUrl,
         },
         where: {
           id,
