@@ -7,10 +7,11 @@ import { getUserPermissions } from '@/utils/get-user-permissions'
 import { BadRequestError } from '../_errors/bad-request-error'
 import { protectedRoute } from '../fastify-zod-route-provider'
 import { rolesSchema } from '@sass/auth'
+import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export async function getMembers(app: FastifyInstance) {
   protectedRoute(app).get(
-    '/members/:organizationSlug',
+    '/organizations/:organizationSlug/members',
     {
       schema: {
         tags: ['members'],
@@ -45,7 +46,7 @@ export async function getMembers(app: FastifyInstance) {
       const { cannot } = getUserPermissions(userId, membership.role)
 
       if (cannot('get', 'User')) {
-        throw new BadRequestError('You are not allowed to see organization members')
+        throw new UnauthorizedError('You are not allowed to see organization members')
       }
 
       // service
