@@ -1,12 +1,12 @@
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
-import { prisma } from '@/lib/prisma'
-import { getUserPermissions } from '@/utils/get-user-permissions'
+import { prisma } from '../../../lib/prisma.js'
+import { getUserPermissions } from '../../../utils/get-user-permissions.js'
 
-import { protectedRoute } from '../fastify-zod-route-provider'
+import { protectedRoute } from '../fastify-zod-route-provider.js'
 import { rolesSchema } from '@sass/auth'
-import { UnauthorizedError } from '../_errors/unauthorized-error'
+import { UnauthorizedError } from '../_errors/unauthorized-error.js'
 
 export async function updateMember(app: FastifyInstance) {
   protectedRoute(app).put(

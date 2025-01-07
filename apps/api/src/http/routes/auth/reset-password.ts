@@ -1,11 +1,11 @@
-import { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import type { FastifyInstance } from 'fastify'
 import z from 'zod'
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma.js'
 
-import { UnauthorizedError } from '../_errors/unauthorized-error'
-import { route } from '../fastify-zod-route-provider'
+import { UnauthorizedError } from '../_errors/unauthorized-error.js'
+import { route } from '../fastify-zod-route-provider.js'
 
 export async function resetPassword(app: FastifyInstance) {
   route(app).post(
@@ -36,7 +36,7 @@ export async function resetPassword(app: FastifyInstance) {
         throw new UnauthorizedError('Invalid token')
       }
 
-      const passwordHash = await hash(password, 10)
+      const passwordHash = await bcrypt.hash(password, 10)
 
       await prisma.user.update({
         where: {

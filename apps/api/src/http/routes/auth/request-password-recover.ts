@@ -1,9 +1,9 @@
 import type { FastifyInstance } from 'fastify'
 import z from 'zod'
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma.js'
 
-import { route } from '../fastify-zod-route-provider'
+import { route } from '../fastify-zod-route-provider.js'
 
 export async function requestPasswordRecover(app: FastifyInstance) {
   route(app).post(

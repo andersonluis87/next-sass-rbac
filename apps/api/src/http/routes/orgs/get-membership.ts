@@ -2,7 +2,7 @@ import { rolesSchema } from '@sass/auth'
 import type { FastifyInstance } from 'fastify'
 import z from 'zod'
 
-import { protectedRoute } from '../fastify-zod-route-provider'
+import { protectedRoute } from '../fastify-zod-route-provider.js'
 
 export async function getMembership(app: FastifyInstance) {
   protectedRoute(app).get(

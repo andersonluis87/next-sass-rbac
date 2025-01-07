@@ -2,12 +2,12 @@ import { organizationSchema } from '@sass/auth'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
-import { prisma } from '@/lib/prisma'
-import { getUserPermissions } from '@/utils/get-user-permissions'
+import { prisma } from '@/lib/prisma.js'
+import { getUserPermissions } from '@/utils/get-user-permissions.js'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-import { UnauthorizedError } from '../_errors/unauthorized-error'
-import { protectedRoute } from '../fastify-zod-route-provider'
+import { BadRequestError } from '../_errors/bad-request-error.js'
+import { UnauthorizedError } from '../_errors/unauthorized-error.js'
+import { protectedRoute } from '../fastify-zod-route-provider.js'
 
 export async function updateOrganization(app: FastifyInstance) {
   protectedRoute(app).patch(

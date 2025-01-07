@@ -1,12 +1,12 @@
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
-import { prisma } from '@/lib/prisma'
-import { createSlug } from '@/utils/create-slug'
-import { getUserPermissions } from '@/utils/get-user-permissions'
+import { prisma } from '@/lib/prisma.js'
+import { createSlug } from '@/utils/create-slug.js'
+import { getUserPermissions } from '@/utils/get-user-permissions.js'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-import { protectedRoute } from '../fastify-zod-route-provider'
+import { BadRequestError } from '../_errors/bad-request-error.js'
+import { protectedRoute } from '../fastify-zod-route-provider.js'
 
 export async function createProject(app: FastifyInstance) {
   protectedRoute(app).post(

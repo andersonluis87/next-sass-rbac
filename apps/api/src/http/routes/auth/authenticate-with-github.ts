@@ -2,10 +2,10 @@ import { env } from '@sass/env'
 import type { FastifyInstance } from 'fastify'
 import z from 'zod'
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma.js'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-import { route } from '../fastify-zod-route-provider'
+import { BadRequestError } from '../_errors/bad-request-error.js'
+import { route } from '../fastify-zod-route-provider.js'
 
 // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
 export async function authenticateWithGithub(app: FastifyInstance) {

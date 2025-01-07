@@ -1,12 +1,11 @@
-import { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import type { FastifyInstance } from 'fastify'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma.js'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-import { route } from '../fastify-zod-route-provider'
+import { BadRequestError } from '../_errors/bad-request-error.js'
+import { route } from '../fastify-zod-route-provider.js'
 
 export async function createAccount(app: FastifyInstance) {
   route(app).post(
@@ -43,7 +42,7 @@ export async function createAccount(app: FastifyInstance) {
         },
       })
 
-      const passwordHash = await hash(password, 6)
+      const passwordHash = await bcrypt.hash(password, 6)
 
       await prisma.user.create({
         data: {

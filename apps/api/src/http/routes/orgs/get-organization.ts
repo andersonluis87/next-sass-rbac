@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
-import { protectedRoute } from '../fastify-zod-route-provider'
+import { protectedRoute } from '../fastify-zod-route-provider.js'
 
 export async function getOrganization(app: FastifyInstance) {
   protectedRoute(app).get(

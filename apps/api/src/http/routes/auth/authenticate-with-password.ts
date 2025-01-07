@@ -1,11 +1,11 @@
-import { compare } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import type { FastifyInstance } from 'fastify'
 import z from 'zod'
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma.js'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-import { route } from '../fastify-zod-route-provider'
+import { BadRequestError } from '../_errors/bad-request-error.js'
+import { route } from '../fastify-zod-route-provider.js'
 
 export async function authenticateWithPassword(app: FastifyInstance) {
   route(app).post(
@@ -44,7 +44,7 @@ export async function authenticateWithPassword(app: FastifyInstance) {
         )
       }
 
-      const passwordMatch = await compare(password, user.passwordHash)
+      const passwordMatch = await bcrypt.compare(password, user.passwordHash)
 
       if (!passwordMatch) {
         throw new BadRequestError('Invalid credentials')
