@@ -1,0 +1,5 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	// We prepend "./node_modules" because Biome doesn't resolve pnpm's symlinks
+	"extends": ["./node_modules/@sass/biome-config/biome.jsonc"]
+}

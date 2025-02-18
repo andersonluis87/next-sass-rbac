@@ -1,12 +1,12 @@
-import { defineAbilityFor, type Role, userSchema } from '@sass/auth'
+import { type Role, defineAbilityFor, userSchema } from "@sass/auth";
 
 export function getUserPermissions(id: string, role: Role) {
-  const authUser = userSchema.parse({
-    id,
-    role,
-  })
+	const authUser = userSchema.parse({
+		id,
+		role,
+	});
 
-  const ability = defineAbilityFor(authUser)
+	const ability = defineAbilityFor(authUser);
 
-  return ability
+	return ability;
 }

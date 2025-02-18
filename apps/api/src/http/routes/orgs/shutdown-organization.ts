@@ -1,55 +1,55 @@
-import { organizationSchema } from '@sass/auth'
-import type { FastifyInstance } from 'fastify'
-import { z } from 'zod'
+import { organizationSchema } from "@sass/auth";
+import type { FastifyInstance } from "fastify";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma.js'
-import { getUserPermissions } from '@/utils/get-user-permissions.js'
+import { prisma } from "@/lib/prisma.js";
+import { getUserPermissions } from "@/utils/get-user-permissions.js";
 
-import { UnauthorizedError } from '../_errors/unauthorized-error.js'
-import { protectedRoute } from '../fastify-zod-route-provider.js'
+import { UnauthorizedError } from "../_errors/unauthorized-error.js";
+import { protectedRoute } from "../fastify-zod-route-provider.js";
 
 export async function shutdownOrganization(app: FastifyInstance) {
-  protectedRoute(app).delete(
-    '/organizations/:slug',
-    {
-      schema: {
-        tags: ['organizations'],
-        summary: 'Shutdown an organization',
-        security: [{ bearerAuth: [] }],
-        params: z.object({
-          slug: z.string(),
-        }),
-        response: {
-          204: z.null(),
-        },
-      },
-    },
-    async (request, reply) => {
-      const { slug } = request.params
+	protectedRoute(app).delete(
+		"/organizations/:slug",
+		{
+			schema: {
+				tags: ["organizations"],
+				summary: "Shutdown an organization",
+				security: [{ bearerAuth: [] }],
+				params: z.object({
+					slug: z.string(),
+				}),
+				response: {
+					204: z.null(),
+				},
+			},
+		},
+		async (request, reply) => {
+			const { slug } = request.params;
 
-      const userId = await request.getCurrentUserId()
-      const {
-        membership: { role },
-        organization,
-      } = await request.getUserMembership(slug)
+			const userId = await request.getCurrentUserId();
+			const {
+				membership: { role },
+				organization,
+			} = await request.getUserMembership(slug);
 
-      const authOrganization = organizationSchema.parse(organization)
+			const authOrganization = organizationSchema.parse(organization);
 
-      const { cannot } = getUserPermissions(userId, role)
+			const { cannot } = getUserPermissions(userId, role);
 
-      if (cannot('delete', authOrganization)) {
-        throw new UnauthorizedError(
-          'You are not allowed to shutdown this organization'
-        )
-      }
+			if (cannot("delete", authOrganization)) {
+				throw new UnauthorizedError(
+					"You are not allowed to shutdown this organization",
+				);
+			}
 
-      await prisma.organization.delete({
-        where: {
-          id: organization.id,
-        },
-      })
+			await prisma.organization.delete({
+				where: {
+					id: organization.id,
+				},
+			});
 
-      return reply.status(204).send()
-    }
-  )
+			return reply.status(204).send();
+		},
+	);
 }

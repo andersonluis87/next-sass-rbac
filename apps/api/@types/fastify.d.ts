@@ -1,13 +1,13 @@
-import 'fastify'
+import "fastify";
 
-import { Member, Organization } from '@prisma/client'
+import type { Member, Organization } from "@prisma/client";
 
-declare module 'fastify' {
-  interface FastifyRequest {
-    getCurrentUserId: () => Promise<string>
-    getUserMembership: (slug: string) => Promise<{
-      organization: Organization
-      membership: Member
-    }>
-  }
+declare module "fastify" {
+	interface FastifyRequest {
+		getCurrentUserId: () => Promise<string>;
+		getUserMembership: (slug: string) => Promise<{
+			organization: Organization;
+			membership: Member;
+		}>;
+	}
 }

@@ -1,12 +1,12 @@
-import { FastifyInstance } from 'fastify'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import type { FastifyInstance } from "fastify";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
-import { auth } from '../middlewares/auth.js'
+import { auth } from "../middlewares/auth.js";
 
 export function route(app: FastifyInstance) {
-  return app.withTypeProvider<ZodTypeProvider>()
+	return app.withTypeProvider<ZodTypeProvider>();
 }
 
 export function protectedRoute(app: FastifyInstance) {
-  return route(app).register(auth)
+	return route(app).register(auth);
 }

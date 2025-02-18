@@ -1,88 +1,88 @@
-import { organizationSchema } from '@sass/auth'
-import type { FastifyInstance } from 'fastify'
-import { z } from 'zod'
+import { organizationSchema } from "@sass/auth";
+import type { FastifyInstance } from "fastify";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma.js'
-import { getUserPermissions } from '@/utils/get-user-permissions.js'
+import { prisma } from "@/lib/prisma.js";
+import { getUserPermissions } from "@/utils/get-user-permissions.js";
 
-import { BadRequestError } from '../_errors/bad-request-error.js'
-import { UnauthorizedError } from '../_errors/unauthorized-error.js'
-import { protectedRoute } from '../fastify-zod-route-provider.js'
+import { BadRequestError } from "../_errors/bad-request-error.js";
+import { UnauthorizedError } from "../_errors/unauthorized-error.js";
+import { protectedRoute } from "../fastify-zod-route-provider.js";
 
 export async function updateOrganization(app: FastifyInstance) {
-  protectedRoute(app).patch(
-    '/organizations/:slug',
-    {
-      schema: {
-        tags: ['organizations'],
-        summary: 'Update an organization',
-        security: [{ bearerAuth: [] }],
-        body: z
-          .object({
-            name: z.string(),
-            domain: z.string().url(),
-            shouldAttachUsersByDomain: z.boolean().default(false),
-          })
-          .partial()
-          .strict(),
-        params: z.object({
-          slug: z.string(),
-        }),
-        response: {
-          204: z.null(),
-        },
-      },
-    },
-    async (request, reply) => {
-      const { slug } = request.params
+	protectedRoute(app).patch(
+		"/organizations/:slug",
+		{
+			schema: {
+				tags: ["organizations"],
+				summary: "Update an organization",
+				security: [{ bearerAuth: [] }],
+				body: z
+					.object({
+						name: z.string(),
+						domain: z.string().url(),
+						shouldAttachUsersByDomain: z.boolean().default(false),
+					})
+					.partial()
+					.strict(),
+				params: z.object({
+					slug: z.string(),
+				}),
+				response: {
+					204: z.null(),
+				},
+			},
+		},
+		async (request, reply) => {
+			const { slug } = request.params;
 
-      const userId = await request.getCurrentUserId()
-      const {
-        membership: { role },
-        organization,
-      } = await request.getUserMembership(slug)
+			const userId = await request.getCurrentUserId();
+			const {
+				membership: { role },
+				organization,
+			} = await request.getUserMembership(slug);
 
-      const { name, domain, shouldAttachUsersByDomain } = request.body
+			const { name, domain, shouldAttachUsersByDomain } = request.body;
 
-      const authOrganization = organizationSchema.parse(organization)
+			const authOrganization = organizationSchema.parse(organization);
 
-      const { cannot } = getUserPermissions(userId, role)
+			const { cannot } = getUserPermissions(userId, role);
 
-      if (cannot('update', authOrganization)) {
-        throw new UnauthorizedError(
-          'You are not allowed to update this organization'
-        )
-      }
+			if (cannot("update", authOrganization)) {
+				throw new UnauthorizedError(
+					"You are not allowed to update this organization",
+				);
+			}
 
-      if (domain) {
-        const organizationExistsByDomain = await prisma.organization.findFirst({
-          where: {
-            domain,
-            slug: {
-              not: slug,
-            },
-          },
-        })
+			if (domain) {
+				const organizationExistsByDomain = await prisma.organization.findFirst({
+					where: {
+						domain,
+						slug: {
+							not: slug,
+						},
+					},
+				});
 
-        if (organizationExistsByDomain) {
-          throw new BadRequestError(
-            'Organization with this domain already exists'
-          )
-        }
-      }
+				if (organizationExistsByDomain) {
+					throw new BadRequestError(
+						"Organization with this domain already exists",
+					);
+				}
+			}
 
-      await prisma.organization.update({
-        where: {
-          id: organization.id,
-        },
-        data: {
-          name,
-          domain,
-          shouldAttachUsersByDomain,
-        },
-      })
+			await prisma.organization.update({
+				where: {
+					id: organization.id,
+				},
+				data: {
+					name,
+					domain,
+					shouldAttachUsersByDomain,
+				},
+			});
 
-      return reply.status(204).send()
-    }
-  )
+			return reply.status(204).send();
+		},
+	);
 }

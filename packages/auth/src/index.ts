@@ -1,56 +1,56 @@
 import {
-  AbilityBuilder,
-  CreateAbility,
-  createMongoAbility,
-  MongoAbility,
-} from '@casl/ability'
-import { z } from 'zod'
+	AbilityBuilder,
+	CreateAbility,
+	MongoAbility,
+	createMongoAbility,
+} from "@casl/ability";
+import { z } from "zod";
 
-import { User } from './models/user'
-import { permissions } from './permissions'
-import { billingSubject } from './subjects/billing'
-import { inviteSubject } from './subjects/invite'
-import { organizationSubject } from './subjects/organizations'
-import { projectSubject } from './subjects/project'
-import { userSubject } from './subjects/user'
+import { User } from "./models/user";
+import { permissions } from "./permissions";
+import { billingSubject } from "./subjects/billing";
+import { inviteSubject } from "./subjects/invite";
+import { organizationSubject } from "./subjects/organizations";
+import { projectSubject } from "./subjects/project";
+import { userSubject } from "./subjects/user";
 
-export { organizationSchema} from './models/organization'
-export { projectSchema } from './models/project'
-export { userSchema } from './models/user'
-export { rolesSchema } from './roles'
+export { organizationSchema } from "./models/organization";
+export { projectSchema } from "./models/project";
+export { userSchema } from "./models/user";
+export { rolesSchema } from "./roles";
 
 const appAbilitiesSchema = z.union([
-  userSubject,
-  projectSubject,
-  organizationSubject,
-  inviteSubject,
-  billingSubject,
+	userSubject,
+	projectSubject,
+	organizationSubject,
+	inviteSubject,
+	billingSubject,
 
-  z.tuple([z.literal('manage'), z.literal('all')]),
-])
+	z.tuple([z.literal("manage"), z.literal("all")]),
+]);
 
-type AppAbilities = z.infer<typeof appAbilitiesSchema>
+type AppAbilities = z.infer<typeof appAbilitiesSchema>;
 
-export type AppAbility = MongoAbility<AppAbilities>
-export const createAppAbility = createMongoAbility as CreateAbility<AppAbility>
+export type AppAbility = MongoAbility<AppAbilities>;
+export const createAppAbility = createMongoAbility as CreateAbility<AppAbility>;
 
 export function defineAbilityFor(user: User) {
-  const builder = new AbilityBuilder(createAppAbility)
+	const builder = new AbilityBuilder(createAppAbility);
 
-  if (typeof permissions[user.role] !== 'function') {
-    throw new Error(`Invalid role: ${user.role}`)
-  }
+	if (typeof permissions[user.role] !== "function") {
+		throw new Error(`Invalid role: ${user.role}`);
+	}
 
-  permissions[user.role](user, builder)
+	permissions[user.role](user, builder);
 
-  const ability = builder.build({
-    detectSubjectType(subject) {
-      return subject.__typename
-    },
-  })
+	const ability = builder.build({
+		detectSubjectType(subject) {
+			return subject.__typename;
+		},
+	});
 
-  ability.can = ability.can.bind(ability)
-  ability.cannot = ability.cannot.bind(ability)
+	ability.can = ability.can.bind(ability);
+	ability.cannot = ability.cannot.bind(ability);
 
-  return ability
+	return ability;
 }

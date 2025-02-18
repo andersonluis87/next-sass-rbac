@@ -1,16 +1,20 @@
 {
-  "name": "saas",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint"
-  },
-  "devDependencies": {
-    "turbo": "^2.0.4"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "engines": {
-    "node": ">=20"
-  }
+	"name": "saas",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"dev": "turbo dev",
+		"lint": "turbo lint",
+		"format-and-lint": "biome check --config-path=biome.root.jsonc .",
+		"format-and-lint:fix": "biome check --config-path=biome.root.jsonc . --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"turbo": "^2.0.4",
+		"@sass/biome-config": "workspace:*"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"packageManager": "pnpm@9.14.4"
 }
